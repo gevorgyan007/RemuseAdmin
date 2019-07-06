@@ -16,11 +16,6 @@ namespace RemuseWebApplication.Repositories
 
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlite("Data Source=AppDatabase.db");
-        }
-
         public DbSet<User> Users { get; set; }
         public DbSet<Book> Books { get; set; }
         public DbSet<Music> Musics { get; set; }
