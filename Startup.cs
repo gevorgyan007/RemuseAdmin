@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RemuseWebApplication.HttpServices;
 using RemuseWebApplication.Repositories;
 
 namespace RemuseWebApplication
@@ -36,6 +37,7 @@ namespace RemuseWebApplication
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContext<AppRepository>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddSingleton<BookServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

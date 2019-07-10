@@ -4,23 +4,27 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RemuseWebApplication.Entities;
+using RemuseWebApplication.HttpServices;
 using RemuseWebApplication.Repositories;
 
 namespace RemuseWebApplication.Controllers
 {
-    public class BooksController : Controller
+    public class BooksController : Controller 
     {
         private readonly AppRepository _context;
+        private readonly BookServices _booksService;
 
-        public BooksController(AppRepository context)
+        public BooksController(AppRepository context, BookServices booksService)
         {
             _context = context;
+            _booksService = booksService;
         }
 
         // GET: Books
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Books.ToListAsync());
+            //return View(await _context.Books.ToListAsync());
+            return View(await _booksService.GetAllBooks());
         }
 
         // GET: Books/Details/5
@@ -52,12 +56,13 @@ namespace RemuseWebApplication.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Autor,Genre")] Book book)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,AuthorId")]  BookService.Models.Book book)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(book);
-                await _context.SaveChangesAsync();
+                await _booksService.CreateNewBooks(book);
+                //_context.Add(book);
+                //await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(book);
